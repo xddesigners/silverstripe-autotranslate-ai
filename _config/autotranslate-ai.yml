@@ -1,0 +1,20 @@
+---
+Name: autotranslate-ai
+---
+# Registers the "silverstripe-ai" translation backend for s2hub/silverstripe-autotranslate. It routes
+# translation through the xddesigners/silverstripe-ai module (Symfony AI), so the provider is chosen by the
+# AI_PLATFORM_TYPE / AI_MODEL / AI_API_KEY env (OpenAI, Anthropic, Mistral, OpenRouter incl. its EU entry
+# point, self-hosted …) and every translation is logged to AIRequestLog.
+#
+# This only ADDS the backend to the map; it does NOT make it the default (so installing this module never
+# changes an existing site's translation behaviour). Activate it per project/site with:
+#
+#   FLUENT_TRANS_BACKEND=silverstripe-ai      # .env, recommended
+#
+# or in project YAML:
+#
+#   S2Hub\AutoTranslate\Translator\TranslatableFactory:
+#     backend: silverstripe-ai
+S2Hub\AutoTranslate\Translator\TranslatableFactory:
+  translators:
+    silverstripe-ai: XD\AutoTranslateAI\AITranslator

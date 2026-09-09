@@ -1,0 +1,31 @@
+{
+    "name": "xddesigners/silverstripe-autotranslate-ai",
+    "description": "Bridge that lets s2hub/silverstripe-autotranslate translate through xddesigners/silverstripe-ai (Symfony AI): provider-agnostic (OpenAI, Anthropic, Mistral, OpenRouter incl. its EU entry point, self-hosted) with usage logging.",
+    "type": "silverstripe-vendormodule",
+    "homepage": "https://github.com/xddesigners/silverstripe-autotranslate-ai",
+    "keywords": ["silverstripe", "fluent", "translation", "autotranslate", "ai", "openrouter", "mistral", "symfony-ai"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Remy Vaartjes",
+            "email": "remy@xd.nl",
+            "homepage": "https://github.com/rvxd"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "silverstripe/framework": "^6",
+        "s2hub/silverstripe-autotranslate": "^1.0",
+        "xddesigners/silverstripe-ai": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "XD\\AutoTranslateAI\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
+}
