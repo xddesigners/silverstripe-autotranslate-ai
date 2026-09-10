@@ -13,7 +13,6 @@
         }
     ],
     "require": {
-        "php": "^8.2",
         "silverstripe/framework": "^6",
         "s2hub/silverstripe-autotranslate": "^1.0",
         "xddesigners/silverstripe-ai": "^1.0"
