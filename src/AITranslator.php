@@ -5,6 +5,7 @@ namespace XD\AutoTranslateAI;
 use S2Hub\AutoTranslate\Translator\Translatable;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Injector\Injectable;
+use SilverStripe\SiteConfig\SiteConfig;
 use XD\SilverstripeAI\Services\AIClient;
 
 /**
@@ -34,6 +35,24 @@ class AITranslator implements Translatable
         . 'human-readable text in each value; preserve all HTML tags, attributes, URLs, placeholders and '
         . 'whitespace. Do not add or remove keys, and do not wrap the output in markdown code fences.';
 
+    /**
+     * Proper names / brand terms that must never be translated (e.g. a company name). Each is passed to the
+     * model as a verbatim "do not translate" term, including any article that is part of the name — this is
+     * what stops "De Schaapskooi" turning into "The Sheepfold" or "The Schaapskooi".
+     *
+     * @config
+     * @var string[]
+     */
+    private static array $preserve_terms = [];
+
+    /**
+     * When true, the current SiteConfig title is automatically added to the preserved terms (the site/brand
+     * name is almost always something you do not want translated). Off by default.
+     *
+     * @config
+     */
+    private static bool $preserve_site_title = false;
+
     public function translate(string $text, string $sourceLocale, string $targetLocale): string
     {
         $instructions = sprintf(
@@ -41,6 +60,13 @@ class AITranslator implements Translatable
             $this->languageLabel($sourceLocale),
             $this->languageLabel($targetLocale)
         );
+
+        $preserve = $this->preserveTerms();
+        if ($preserve !== []) {
+            $quoted = implode(', ', array_map(static fn(string $term): string => '"' . $term . '"', $preserve));
+            $instructions .= ' Keep the following names exactly as written, verbatim — never translate them, and'
+                . ' never translate an article that is part of them (keep "De" as "De", not "The"): ' . $quoted . '.';
+        }
 
         $result = $this->stripCodeFences(AIClient::create()->translateJson($text, $instructions));
 
@@ -56,6 +82,28 @@ class AITranslator implements Translatable
         }
 
         return $result;
+    }
+
+    /**
+     * @return string[] unique, trimmed brand / proper-name terms the translator must leave untouched
+     */
+    private function preserveTerms(): array
+    {
+        $terms = (array) $this->config()->get('preserve_terms');
+
+        if ($this->config()->get('preserve_site_title') && class_exists(SiteConfig::class)) {
+            $title = trim((string) SiteConfig::current_site_config()->Title);
+            if ($title !== '') {
+                $terms[] = $title;
+            }
+        }
+
+        $terms = array_filter(
+            array_map(static fn($term): string => trim((string) $term), $terms),
+            static fn(string $term): bool => $term !== ''
+        );
+
+        return array_values(array_unique($terms));
     }
 
     /**

@@ -90,6 +90,20 @@ XD\AutoTranslateAI\AITranslator:
   command: 'Translate the JSON values from %1$s to %2$s. Return only valid JSON with the same keys.'
 ```
 
+### Preserving brand / proper names
+
+Stop the translator from translating a company or product name. Each term is sent to the model as a
+verbatim "do not translate" instruction, **including any article that is part of the name** — so
+`De Schaapskooi` is never rendered as `The Sheepfold` or `The Schaapskooi`.
+
+```yaml
+XD\AutoTranslateAI\AITranslator:
+  preserve_terms:
+    - 'De Schaapskooi'
+  # Optionally add the SiteConfig title automatically (off by default):
+  preserve_site_title: true
+```
+
 ## Notes
 
 - **Cost/usage:** token counts are logged for every provider; a cost estimate is shown when the model is

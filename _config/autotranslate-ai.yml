@@ -18,3 +18,13 @@ Name: autotranslate-ai
 S2Hub\AutoTranslate\Translator\TranslatableFactory:
   translators:
     silverstripe-ai: XD\AutoTranslateAI\AITranslator
+
+# Optional: keep brand / proper names out of the translation. Each term is sent to the model as a verbatim
+# "do not translate" instruction, including any article that is part of the name — this is what stops e.g.
+# "De Schaapskooi" being rendered as "The Sheepfold" or "The Schaapskooi". Set per project:
+#
+# XD\AutoTranslateAI\AITranslator:
+#   preserve_terms:
+#     - 'De Schaapskooi'
+#   # Or add the SiteConfig title automatically (off by default):
+#   preserve_site_title: true
