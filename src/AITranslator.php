@@ -37,8 +37,8 @@ class AITranslator implements Translatable
 
     /**
      * Proper names / brand terms that must never be translated (e.g. a company name). Each is passed to the
-     * model as a verbatim "do not translate" term, including any article that is part of the name — this is
-     * what stops "De Schaapskooi" turning into "The Sheepfold" or "The Schaapskooi".
+     * model as a verbatim "do not translate" term, including any article that is part of the name — so a name
+     * like "Acme" is never translated, and a leading article (e.g. the Dutch "De") is kept as-is, not "The".
      *
      * @config
      * @var string[]

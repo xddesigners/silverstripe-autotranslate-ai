@@ -94,12 +94,12 @@ XD\AutoTranslateAI\AITranslator:
 
 Stop the translator from translating a company or product name. Each term is sent to the model as a
 verbatim "do not translate" instruction, **including any article that is part of the name** — so
-`De Schaapskooi` is never rendered as `The Sheepfold` or `The Schaapskooi`.
+`Acme` is never translated, and a leading article (e.g. the Dutch `De`) is kept as-is rather than `The`.
 
 ```yaml
 XD\AutoTranslateAI\AITranslator:
   preserve_terms:
-    - 'De Schaapskooi'
+    - 'Acme'
   # Optionally add the SiteConfig title automatically (off by default):
   preserve_site_title: true
 ```
